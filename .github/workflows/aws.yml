@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: myrepo           # set this to your Amazon ECR repository name
   ECS_SERVICE: development-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: development-cluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: development-task-definition:1 # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: development-task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: development-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -77,13 +77,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+    
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
