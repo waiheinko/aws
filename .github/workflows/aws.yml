@@ -29,8 +29,6 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches: [ "main" ]
-    # run manually
-  workflow_dispatch:
 
 env:
   AWS_REGION: ap-southeast-1                   # set this to your preferred AWS region, e.g. us-west-1
@@ -48,7 +46,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: production
 
     steps:
